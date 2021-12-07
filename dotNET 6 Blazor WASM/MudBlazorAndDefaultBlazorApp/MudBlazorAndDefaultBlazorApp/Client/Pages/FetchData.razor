@@ -35,13 +35,33 @@ else
             </MudTable>
         </MudItem>
     </MudGrid>
+
+    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" ChartOptions="@ChartOptions" LegendPosition="Position.Right" Width="570px" Height="570px" />
 }
 
 @code {
     private WeatherForecast[]? forecasts;
 
+    List<ChartSeries> Series = new();
+    ChartOptions ChartOptions = new();
+
     protected override async Task OnInitializedAsync()
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+
+        Series.Add(new ChartSeries()
+            {
+                Name = "Temp. (C)",
+                Data = forecasts?.Select<WeatherForecast, double>(x => x.TemperatureC).ToArray()
+            });
+        Series.Add(new ChartSeries()
+            {
+                Name = "Temp. (F)",
+                Data = forecasts?.Select<WeatherForecast, double>(x => x.TemperatureF).ToArray()
+            });
+
+        ChartOptions.InterpolationOption = InterpolationOption.NaturalSpline;
+        ChartOptions.DisableLegend = false;
+        ChartOptions.ChartPalette = new string[] { MudBlazor.Colors.Green.Default, MudBlazor.Colors.Red.Default };
     }
 }
