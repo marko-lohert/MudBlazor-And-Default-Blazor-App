@@ -7,3 +7,18 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<MudGrid>
+    <MudItem xs="12" sm="3">
+        <MudDatePicker Label="Date of Birth" @bind-Date="SelectedDate" PickerVariant="PickerVariant.Dialog" Orientation="Orientation.Portrait" Color="Color.Primary" OpenTo="OpenTo.Date" ReadOnly="false"></MudDatePicker>
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudDateRangePicker Label="Vacation" @bind-DateRange="SelectedDateRange" />
+    </MudItem>
+</MudGrid>
+
+@code {
+    private DateTime? SelectedDate { get; set; }
+    DateRange SelectedDateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(21).Date);
+}
