@@ -14,23 +14,27 @@
 }
 else
 {
-    <MudTable Items="@forecasts" SortLabel="SortBy" Hover="true" Elevation="5">
-        <HeaderContent>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.Date)">Date</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.Summary)">Summary</MudTableSortLabel></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd>@context.Date.ToShortDateString()</MudTd>
-            <MudTd>@context.TemperatureC</MudTd>
-            <MudTd>@context.TemperatureF</MudTd>
-            <MudTd>@context.Summary</MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
+    <MudGrid>
+        <MudItem xs="12" sm="4">
+            <MudTable Items="@forecasts" SortLabel="SortBy" Hover="true" Elevation="5">
+                <HeaderContent>
+                    <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.Date)">Date</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.Summary)">Summary</MudTableSortLabel></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Date.ToShortDateString()</MudTd>
+                    <MudTd>@context.TemperatureC</MudTd>
+                    <MudTd>@context.TemperatureF</MudTd>
+                    <MudTd>@context.Summary</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudItem>
+    </MudGrid>
 }
 
 @code {
