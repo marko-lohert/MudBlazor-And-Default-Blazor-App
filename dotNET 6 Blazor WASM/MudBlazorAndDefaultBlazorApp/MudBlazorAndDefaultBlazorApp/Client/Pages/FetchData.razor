@@ -6,7 +6,9 @@
 
 <MudText Typo="Typo.h3">Weather forecast</MudText>
 
+<br />
 <MudText Typo="Typo.body1">This component demonstrates fetching data from the server.</MudText>
+<br />
 
 @if (forecasts == null)
 {
@@ -41,9 +43,21 @@ else
 
         <MudTabPanel Text="Chart" Icon="@Icons.Material.Outlined.Cloud" BadgeData="@TabChartBadgeText" BadgeColor="Color.Error" ToolTip="Forecasts displayed in a chart">
             <MudChart ChartType="ChartType.Line" ChartSeries="@Series" ChartOptions="@ChartOptions" LegendPosition="Position.Right" Width="570px" Height="570px" />
-        </MudTabPanel>    
+        </MudTabPanel>
     </MudTabs>
 }
+
+<br />
+
+<MudGrid>
+    <MudItem xs="12" sm="3">
+        <MudDatePicker Label="Until Date" @bind-Date="UntilDate" PickerClosed="OnDatePickerClosed" PickerVariant="PickerVariant.Dialog" Orientation="Orientation.Portrait" Color="Color.Primary" OpenTo="OpenTo.Date" ReadOnly="false" />
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudDateRangePicker Label="Forecast For a Range" @bind-DateRange="SelectedDateRange" PickerClosed="OnDateRangePickerClosed" />
+    </MudItem>
+</MudGrid>
 
 @code {
     private WeatherForecast[]? forecasts;
@@ -52,11 +66,34 @@ else
     ChartOptions ChartOptions = new();
 
     int activeTabIndex;
-    string TabChartBadgeText { get; set; }
+    string TabChartBadgeText { get; set; } = string.Empty;
+
+    DateTime? FromDate { get; set; } = DateTime.Now;
+    DateTime? UntilDate { get; set; } = DateTime.Now.AddMonths(1);
+    DateRange SelectedDateRange { get; set; } = new DateRange(DateTime.Now, DateTime.Now.AddMonths(1));
+
+    private async Task ReadWeatherForecastFromServer()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>($"WeatherForecast?fromDate={FromDate}&untilDate={UntilDate}");
+    }
+
+    private async Task OnDatePickerClosed()
+    {
+        FromDate = DateTime.Now;
+        // UntilDate is set by MudDatePicker.
+        await ReadWeatherForecastFromServer();
+    }
+
+    private async Task OnDateRangePickerClosed()
+    {
+        FromDate = SelectedDateRange.Start;
+        UntilDate = SelectedDateRange.End;
+        await ReadWeatherForecastFromServer();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        await ReadWeatherForecastFromServer();
 
         Series.Add(new ChartSeries()
             {

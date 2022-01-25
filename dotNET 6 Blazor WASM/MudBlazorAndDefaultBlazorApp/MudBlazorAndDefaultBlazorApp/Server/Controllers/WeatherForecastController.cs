@@ -20,11 +20,14 @@ namespace MudBlazorAndDefaultBlazorApp.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecast> Get(DateTime fromDate, DateTime untilDate)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            // When counting days in a given range (fromDate - untilDate) count whole days (ignore hours and minutes)
+            // and include both fromDate and untilDate into range by adding 1.
+            int countDays = (untilDate.Date - fromDate.Date).Days + 1;
+            return Enumerable.Range(0, countDays).Select(index => new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
+                Date = fromDate.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
