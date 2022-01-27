@@ -1,7 +1,8 @@
 # MudBlazor-And-Default-Blazor-App
 MudBlazor, a Blazor component library, used in a default Blazor app -> this is a demo app that shows how to get started with MudBlazor.
 
-## The conference(s) and meetups in which I have used this demo app.
+
+## The conference(s) and meetups in which I have used this demo app
 
 |Version|Date|Event|Location|Video|
 |---|---|---|---|---|
